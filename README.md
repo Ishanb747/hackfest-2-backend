@@ -15,8 +15,11 @@ RuleForge centers around a consolidated **Backend** (Python/DuckDB) and a **Reac
 # Start all services
 docker-compose up --build
 ```
-- **Backend API**: http://localhost:5000
-- **Dashboard**: http://localhost:3000
+### Deployment (Render)
+To deploy on Render:
+1.  Connect your GitHub repository to Render.
+2.  Render will automatically detect the `render.yaml` blueprint.
+3.  Click **Apply** and set your `GROQ_API_KEY` in the Environment Variables.
 
 ### Standalone Backend Deployment (No Docker)
 If you wish to deploy the backend separately:

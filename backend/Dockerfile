@@ -19,5 +19,5 @@ COPY . .
 # Expose Flask port
 EXPOSE 5000
 
-# Start the Flask backend by default
-CMD ["python", "flask_backend.py"]
+# Start the Flask backend with gunicorn for production
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "flask_backend:app"]
