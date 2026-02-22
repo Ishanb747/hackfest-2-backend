@@ -3,7 +3,7 @@
  * All calls go to the Flask backend at http://localhost:5000
  */
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://hackfest-2-backend.onrender.com';
 
 async function apiFetch(path, options = {}) {
   const url = `${BASE_URL}${path}`;
@@ -108,5 +108,5 @@ export const fetchPipelineStatus = (offset = 0) =>
 
 // ── Exports ──────────────────────────────────────────────────────────────────
 
-export const getViolationsCSVUrl  = () => `${BASE_URL}/api/export/violations`;
+export const getViolationsCSVUrl = () => `${BASE_URL}/api/export/violations`;
 export const getComplianceReportUrl = () => `${BASE_URL}/api/export/report`;
