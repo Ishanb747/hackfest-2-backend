@@ -24,11 +24,8 @@ from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, origins=[
-    "http://localhost:3000", 
-    "http://127.0.0.1:3000",
-    "https://hackfest-2-backend.vercel.app"
-])
+# Enable CORS for all routes (permissive for hackathon ease-of-use)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route("/")
 def index():
