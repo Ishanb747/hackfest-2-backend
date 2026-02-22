@@ -22,6 +22,7 @@ import pandas as pd
 import psutil
 from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
+from data.setup_duckdb import setup_database
 
 app = Flask(__name__)
 # Enable CORS for all routes (permissive for hackathon ease-of-use)
@@ -489,15 +490,10 @@ def upload_csv():
     save_path = DATA_DIR / f.filename
     f.save(str(save_path))
     
-    # Run setup_duckdb.py
+    # Run setup_database directly (saves memory vs subprocess)
     try:
-        venv_python = ROOT / "venv" / "Scripts" / "python.exe"
-        python_exe  = str(venv_python) if venv_python.exists() else sys.executable
-        cmd = [python_exe, str(ROOT / "data" / "setup_duckdb.py")]
-        
-        process = subprocess.run(cmd, capture_output=True, text=True, cwd=str(ROOT))
-        if process.returncode != 0:
-            return jsonify({"error": "Database setup failed", "logs": process.stderr + "\n" + process.stdout}), 500
+        setup_database(save_path)
+        return jsonify({"success": True, "message": "Database setup completed successfully"})
             
         return jsonify({
             "success":  True,

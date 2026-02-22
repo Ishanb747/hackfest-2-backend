@@ -20,4 +20,5 @@ COPY . .
 EXPOSE 5000
 
 # Start the Flask backend with gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "flask_backend:app"]
+# Increased timeout for large CSV uploads and limited workers for memory efficiency
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "1", "--threads", "4", "--timeout", "600", "flask_backend:app"]
