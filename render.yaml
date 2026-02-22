@@ -5,22 +5,9 @@ services:
     env: docker
     dockerContext: backend
     dockerfilePath: Dockerfile
+    plan: starter # or your preferred plan
     envVars:
       - key: GROQ_API_KEY
         sync: false # Must be set in Render Dashboard
       - key: TURGON_MODEL
         value: llama-3.3-70b-versatile
-
-  # Frontend React Dashboard
-  - type: static
-    name: turgon-frontend
-    env: node
-    buildCommand: npm install && npm run build
-    publishDir: build
-    rootDir: RuleForge-Frontend
-    envVars:
-      - key: REACT_APP_API_URL
-        fromService:
-          type: web
-          name: turgon-backend
-          property: host

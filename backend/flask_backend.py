@@ -26,6 +26,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000"])
 
+@app.route("/")
+def index():
+    """Root route for health checks."""
+    return jsonify({"status": "running", "message": "RuleForge Backend API is active"}), 200
+
 # ── Paths ─────────────────────────────────────────────────────────────────────
 ROOT           = Path(__file__).parent.resolve()
 RULES_JSON     = ROOT / "rules" / "policy_rules.json"
