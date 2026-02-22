@@ -1,0 +1,142 @@
+[
+  {
+    "id": "RULE_001",
+    "rule_type": "threshold",
+    "description": "Currency Transaction Report (CTR)",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 10000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 10000",
+    "_fingerprint": "00f0063767a11177"
+  },
+  {
+    "id": "RULE_002",
+    "rule_type": "pattern",
+    "description": "Large Wire Transfer Monitoring",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 50000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 50000 AND Payment_Format = 'Wire'",
+    "_fingerprint": "bbd4b842f80c5413"
+  },
+  {
+    "id": "RULE_004",
+    "rule_type": "threshold",
+    "description": "High-Value Reinvestment Transactions",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 25000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 25000 AND Payment_Format = 'Reinvestment'",
+    "_fingerprint": "efc9c8d23d91e1ae"
+  },
+  {
+    "id": "RULE_005",
+    "rule_type": "threshold",
+    "description": "Cryptocurrency Exchange Threshold",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 3000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 3000 AND Payment_Format = 'Crypto'",
+    "_fingerprint": "31bfd078640cd581"
+  },
+  {
+    "id": "RULE_006",
+    "rule_type": "pattern",
+    "description": "Currency Conversion Mismatch Alert",
+    "condition_field": "Payment_Currency",
+    "operator": "!=",
+    "threshold_value": null,
+    "sql_hint": "SELECT * FROM transactions WHERE Payment_Currency != Receiving_Currency AND Amount_Paid > 5000",
+    "_fingerprint": "1a6884abd96aa5cd"
+  },
+  {
+    "id": "RULE_007",
+    "rule_type": "threshold",
+    "description": "High-Risk Jurisdiction Transfers",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 1000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 1000 AND (From_Bank IN (SELECT bank FROM high_risk_jurisdictions) OR To_Bank IN (SELECT bank FROM high_risk_jurisdictions))",
+    "_fingerprint": "7e41b249ffcba12d"
+  },
+  {
+    "id": "RULE_008",
+    "rule_type": "pattern",
+    "description": "Rapid Cross-Currency Round-Trip",
+    "condition_field": "Amount_Received",
+    "operator": ">",
+    "threshold_value": 2000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Received > 2000 AND Amount_Paid > 2000 AND Amount_Received - Amount_Paid > 0.15 * Amount_Paid",
+    "_fingerprint": "d75f2832fdc4e91b"
+  },
+  {
+    "id": "RULE_009",
+    "rule_type": "threshold",
+    "description": "Dormant Account Sudden Activity",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 5000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 5000 AND account_status = 'dormant'",
+    "_fingerprint": "9478f8785fa660a5"
+  },
+  {
+    "id": "RULE_010",
+    "rule_type": "pattern",
+    "description": "Round-Number Transaction Pattern",
+    "condition_field": "Amount_Paid",
+    "operator": ">=",
+    "threshold_value": 5000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid >= 5000 AND Amount_Paid % 1000 = 0",
+    "_fingerprint": "9cdd1408df71f2c6"
+  },
+  {
+    "id": "RULE_011",
+    "rule_type": "threshold",
+    "description": "Velocity Spike Detection",
+    "condition_field": "Rolling_7d_Volume",
+    "operator": ">",
+    "threshold_value": null,
+    "sql_hint": "SELECT * FROM transactions WHERE Rolling_7d_Volume > (Avg_Daily_90d * 3 * 7)",
+    "_fingerprint": "8a07c405bbf688a7"
+  },
+  {
+    "id": "RULE_012",
+    "rule_type": "threshold",
+    "description": "Cheque Transactions Above Threshold",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 15000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 15000 AND Payment_Format = 'Cheque'",
+    "_fingerprint": "1a8e0443b8013de4"
+  },
+  {
+    "id": "RULE_013",
+    "rule_type": "pattern",
+    "description": "Credit Card Large Purchases",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 8000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 8000 AND Payment_Format = 'Credit Card'",
+    "_fingerprint": "2e83d930a263aa0d"
+  },
+  {
+    "id": "RULE_015",
+    "rule_type": "threshold",
+    "description": "Instant Payment Network Monitoring",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 20000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 20000 AND Payment_Format = 'RTP'",
+    "_fingerprint": "4688c39c9b8ba1fd"
+  },
+  {
+    "id": "RULE_016",
+    "rule_type": "threshold",
+    "description": "Known Laundering Transaction Audit",
+    "condition_field": "Is_Laundering",
+    "operator": "=",
+    "threshold_value": 1,
+    "sql_hint": "SELECT * FROM transactions WHERE Is_Laundering = 1",
+    "_fingerprint": "08ce80bb32d9d041"
+  }
+]

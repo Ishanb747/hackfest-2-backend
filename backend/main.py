@@ -101,6 +101,24 @@ def run_phase1(pdf_path: Path) -> dict:
     """Phase 1: Ingest PDF and extract structured policy rules."""
     console.print(Rule("[bold cyan]Phase 1 — RuleForge: PDF Ingestion & Structuring[/]"))
 
+    from config import RULES_JSON_PATH, RULES_DIR
+    from tools import _snapshot_current_rules
+
+    # Archive and wipe previous rules and reports so we start fresh
+    if RULES_JSON_PATH.exists():
+        _snapshot_current_rules(pdf_source=str(pdf_path))
+        
+        # Files to clear to reset dashboard state
+        to_clear = [
+            RULES_JSON_PATH,
+            RULES_DIR / "violation_report.json",
+            RULES_DIR / "explanations.json",
+            RULES_DIR / "violation_report_live.json"
+        ]
+        for p in to_clear:
+            if p.exists():
+                p.unlink()
+
     agent = build_rule_architect_agent()
     task = build_ingest_task(agent, str(pdf_path))
 

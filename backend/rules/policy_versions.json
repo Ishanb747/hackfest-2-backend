@@ -1,0 +1,107 @@
+[
+  {
+    "version": 1,
+    "timestamp": "2026-02-21T13:43:49.496378Z",
+    "pdf_source": "C:\\Users\\SARTHAK\\Desktop\\hackfest2.0 - Copy\\HackFest-2.0\\uploads\\test_aml_policy.pdf",
+    "rule_count": 45,
+    "archive": "policy_rules_v1__20260221T134349Z.json"
+  },
+  {
+    "version": 2,
+    "timestamp": "2026-02-21T22:00:43.103960Z",
+    "pdf_source": "C:\\Users\\SARTHAK\\Desktop\\hackfest - Copy - Copy\\HackFest-2.0\\uploads\\test_aml_policy.pdf",
+    "rule_count": 51,
+    "archive": "policy_rules_v2__20260221T220043Z.json"
+  },
+  {
+    "version": 3,
+    "timestamp": "2026-02-22T00:06:48.199293Z",
+    "pdf_source": "C:\\Users\\SARTHAK\\Desktop\\hackfest - 2\\HackFest-2.0\\uploads\\test_aml_policy.pdf",
+    "rule_count": 51,
+    "archive": "policy_rules_v3__20260222T000648Z.json"
+  },
+  {
+    "version": 4,
+    "timestamp": "2026-02-22T00:44:55.644288Z",
+    "pdf_source": "C:\\Users\\SARTHAK\\Desktop\\hackfest - 2\\HackFest-2.0\\uploads\\test_aml_policy.pdf",
+    "rule_count": 51,
+    "archive": "policy_rules_v4__20260222T004455Z.json"
+  },
+  {
+    "version": 5,
+    "timestamp": "2026-02-22T04:25:12.055257Z",
+    "pdf_source": "D:\\\\Projects\\\\HackFest 2.0 final\\\\HackFest-2.0\\\\uploads\\\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v5__20260222T042512Z.json"
+  },
+  {
+    "version": 6,
+    "timestamp": "2026-02-22T04:28:10.686689Z",
+    "pdf_source": "d:\\\\Projects\\\\HackFest 2.0 final\\\\HackFest-2.0\\\\uploads\\\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v6__20260222T042810Z.json"
+  },
+  {
+    "version": 7,
+    "timestamp": "2026-02-22T04:28:53.692533Z",
+    "pdf_source": "d:\\\\Projects\\\\HackFest 2.0 final\\\\HackFest-2.0\\\\uploads\\\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v7__20260222T042853Z.json"
+  },
+  {
+    "version": 8,
+    "timestamp": "2026-02-22T04:29:34.576185Z",
+    "pdf_source": "d:\\\\Projects\\\\HackFest 2.0 final\\\\HackFest-2.0\\\\uploads\\\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v8__20260222T042934Z.json"
+  },
+  {
+    "version": 9,
+    "timestamp": "2026-02-22T04:30:20.198757Z",
+    "pdf_source": "d:\\\\Projects\\\\HackFest 2.0 final\\\\HackFest-2.0\\\\uploads\\\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v9__20260222T043020Z.json"
+  },
+  {
+    "version": 10,
+    "timestamp": "2026-02-22T04:32:35.656167Z",
+    "pdf_source": "D:\\\\Projects\\\\HackFest 2.0 final\\\\HackFest-2.0\\\\uploads\\\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v10__20260222T043235Z.json"
+  },
+  {
+    "version": 11,
+    "timestamp": "2026-02-22T04:36:01.284919Z",
+    "pdf_source": "D:\\\\Projects\\\\HackFest 2.0 final\\\\HackFest-2.0\\\\uploads\\\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v11__20260222T043601Z.json"
+  },
+  {
+    "version": 12,
+    "timestamp": "2026-02-22T04:42:47.430023Z",
+    "pdf_source": "D:\\Projects\\HackFest 2.0 final\\HackFest-2.0\\uploads\\test_aml_policy_modified (2).pdf",
+    "rule_count": 23,
+    "archive": "policy_rules_v12__20260222T044247Z.json"
+  },
+  {
+    "version": 13,
+    "timestamp": "2026-02-22T04:44:51.828942Z",
+    "pdf_source": "d:\\Projects\\HackFest 2.0 final\\HackFest-2.0\\uploads\\test_aml_policy_modified (2).pdf",
+    "rule_count": 1,
+    "archive": "policy_rules_v13__20260222T044451Z.json"
+  },
+  {
+    "version": 14,
+    "timestamp": "2026-02-22T04:45:45.821457Z",
+    "pdf_source": "d:\\Projects\\HackFest 2.0 final\\HackFest-2.0\\uploads\\test_aml_policy_modified (2).pdf",
+    "rule_count": 1,
+    "archive": "policy_rules_v14__20260222T044545Z.json"
+  },
+  {
+    "version": 15,
+    "timestamp": "2026-02-22T04:48:50.824163Z",
+    "pdf_source": "D:\\Projects\\HackFest 2.0 final\\HackFest-2.0\\uploads\\test_aml_policy_modified (1).pdf",
+    "rule_count": 1,
+    "archive": "policy_rules_v15__20260222T044850Z.json"
+  }
+]

@@ -19,6 +19,7 @@ import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
 import {
   uploadPDF,
+  uploadCSV,
   runPipeline,
   fetchPipelineStatus,
   fetchAuditLog,
@@ -46,6 +47,12 @@ function ScanNow() {
   const [logOffset, setLogOffset] = useState(0);
   const [recentScans, setRecentScans] = useState([]);
   const [loadingScans, setLoadingScans] = useState(true);
+
+  const [csvDragActive, setCsvDragActive] = useState(false);
+  const [uploadedCsvFile, setUploadedCsvFile] = useState(null);
+  const [uploadingCsv, setUploadingCsv] = useState(false);
+  const [csvStatus, setCsvStatus] = useState(null);
+
   const { refresh: refreshGate } = useScan();
   const pollRef = useRef(null);
   const logBoxRef = useRef(null);
@@ -134,6 +141,48 @@ function ScanNow() {
   const removeFile = () => {
     setUploadedFile(null);
     setUploadedFilename(null);
+  };
+
+  const handleCsvDrag = (e) => {
+    e.preventDefault(); e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') setCsvDragActive(true);
+    else if (e.type === 'dragleave') setCsvDragActive(false);
+  };
+
+  const handleCsvDrop = (e) => {
+    e.preventDefault(); e.stopPropagation();
+    setCsvDragActive(false);
+    const files = e.dataTransfer.files;
+    if (files && files[0]) handleCsvSelect(files[0]);
+  };
+
+  const handleCsvSelect = (file) => {
+    if (!file.name.endsWith('.csv')) {
+      alert('Only CSV files are supported.');
+      return;
+    }
+    setUploadedCsvFile(file);
+    setCsvStatus(null);
+  };
+
+  const handleCsvInput = (e) => {
+    if (e.target.files && e.target.files[0]) handleCsvSelect(e.target.files[0]);
+  };
+
+  const uploadDataset = async () => {
+    if (!uploadedCsvFile) return;
+    setUploadingCsv(true);
+    setCsvStatus(null);
+    try {
+      await uploadCSV(uploadedCsvFile);
+      setCsvStatus('success');
+      setUploadedCsvFile(null);
+    } catch (e) {
+      setCsvStatus('error');
+      setLogLines([`[ERROR] ${e.message}`]);
+    } finally {
+      setUploadingCsv(false);
+    }
   };
 
   const formatFileSize = (bytes) => {
@@ -235,6 +284,75 @@ function ScanNow() {
             {!needsPdf && (
               <p className="upload-skip-hint">
                 ℹ️ Phase {scanPhase} doesn't require a PDF upload.
+              </p>
+            )}
+          </div>
+
+          {/* CSV Dataset Upload */}
+          <div className="panel-section">
+            <h3 className="section-title">
+              <Database size={18} />
+              Upload AML Dataset (CSV)
+            </h3>
+
+            {!uploadedCsvFile ? (
+              <div
+                className={`upload-zone ${csvDragActive ? 'active' : ''}`}
+                onDragEnter={handleCsvDrag}
+                onDragLeave={handleCsvDrag}
+                onDragOver={handleCsvDrag}
+                onDrop={handleCsvDrop}
+              >
+                <input
+                  type="file"
+                  id="csv-upload"
+                  accept=".csv"
+                  onChange={handleCsvInput}
+                  className="file-input"
+                />
+                <label htmlFor="csv-upload" className="upload-label">
+                  <div className="upload-icon"><FileText size={32} /></div>
+                  <p className="upload-text">
+                    <span>Click to upload CSV</span> or drag and drop
+                  </p>
+                  <p className="upload-hint">Will automatically rebuild the DuckDB schema</p>
+                </label>
+              </div>
+            ) : (
+              <div className="uploaded-files">
+                <div className="file-item" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <File size={16} />
+                      <div className="file-info">
+                        <span className="file-name">{uploadedCsvFile.name}</span>
+                        <span className="file-size">{formatFileSize(uploadedCsvFile.size)}</span>
+                      </div>
+                    </div>
+                    <button className="remove-file-btn" style={{ position: 'static', alignSelf: 'flex-start' }} onClick={() => setUploadedCsvFile(null)}>
+                      <X size={14} />
+                    </button>
+                  </div>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    fullWidth
+                    loading={uploadingCsv}
+                    onClick={uploadDataset}
+                  >
+                    {uploadingCsv ? 'Setting up DuckDB…' : 'Ingest Dataset & Create Views'}
+                  </Button>
+                </div>
+              </div>
+            )}
+            {csvStatus === 'success' && (
+              <p className="upload-hint" style={{ color: '#16a34a', marginTop: '0.5rem', fontWeight: 600 }}>
+                ✓ Database ingested and views updated successfully!
+              </p>
+            )}
+            {csvStatus === 'error' && (
+              <p className="upload-hint" style={{ color: '#dc2626', marginTop: '0.5rem', fontWeight: 600 }}>
+                ❌ Failed to ingest CSV dataset. Check log.
               </p>
             )}
           </div>

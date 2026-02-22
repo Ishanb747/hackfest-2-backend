@@ -1,0 +1,142 @@
+[
+  {
+    "rule_id": "RULE_001",
+    "alert_headline": "1,864,800 Transactions Violate Currency Transaction Report (CTR).",
+    "plain_english": "Our automated compliance scan identified 1,864,800 transactions that exceeds a regulatory reporting threshold. Each transaction has Amount_Paid > 10000, which triggers the policy rule: \"Currency Transaction Report (CTR)\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 1864800,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "Currency Transaction Report (CTR)",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_002",
+    "alert_headline": "41,072 Transactions Violate Large Wire Transfer Monitoring.",
+    "plain_english": "Our automated compliance scan identified 41,072 transactions that matches a structuring or layering pattern. Each transaction has Amount_Paid > 50000, which triggers the policy rule: \"Large Wire Transfer Monitoring\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 41072,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "Large Wire Transfer Monitoring",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_004",
+    "alert_headline": "190,653 Transactions Violate High-Value Reinvestment Transactions.",
+    "plain_english": "Our automated compliance scan identified 190,653 transactions that exceeds a regulatory reporting threshold. Each transaction has Amount_Paid > 25000, which triggers the policy rule: \"High-Value Reinvestment Transactions\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 190653,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "High-Value Reinvestment Transactions",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_007",
+    "alert_headline": "3,761,676 Transactions Violate High-Risk Jurisdiction Transfers.",
+    "plain_english": "Our automated compliance scan identified 3,761,676 transactions that exceeds a regulatory reporting threshold. Each transaction has Amount_Paid > 1000, which triggers the policy rule: \"High-Risk Jurisdiction Transfers\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 3761676,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "High-Risk Jurisdiction Transfers",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_008",
+    "alert_headline": "3,137,054 Transactions Violate Rapid Cross-Currency Round-Trip.",
+    "plain_english": "Our automated compliance scan identified 3,137,054 transactions that matches a structuring or layering pattern. Each transaction has Amount_Received > 2000, which triggers the policy rule: \"Rapid Cross-Currency Round-Trip\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 3137054,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "Rapid Cross-Currency Round-Trip",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_009",
+    "alert_headline": "2,341,917 Transactions Violate Dormant Account Sudden Activity.",
+    "plain_english": "Our automated compliance scan identified 2,341,917 transactions that exceeds a regulatory reporting threshold. Each transaction has Amount_Paid > 5000, which triggers the policy rule: \"Dormant Account Sudden Activity\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 2341917,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "Dormant Account Sudden Activity",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_010",
+    "alert_headline": "30 Transactions Violate Round-Number Transaction Pattern.",
+    "plain_english": "Our automated compliance scan identified 30 transactions that matches a structuring or layering pattern. Each transaction has Amount_Paid >= 5000, which triggers the policy rule: \"Round-Number Transaction Pattern\". This constitutes a LOW-severity finding requiring analyst review.",
+    "risk_level": "LOW",
+    "violation_count": 30,
+    "recommended_action": "Monitor the accounts and retain records for 5 years per BSA requirements.",
+    "policy_reference": "Round-Number Transaction Pattern",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_012",
+    "alert_headline": "637,911 Transactions Violate Cheque Transactions Above Threshold.",
+    "plain_english": "Our automated compliance scan identified 637,911 transactions that exceeds a regulatory reporting threshold. Each transaction has Amount_Paid > 15000, which triggers the policy rule: \"Cheque Transactions Above Threshold\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 637911,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "Cheque Transactions Above Threshold",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_013",
+    "alert_headline": "422,925 Transactions Violate Credit Card Large Purchases.",
+    "plain_english": "Our automated compliance scan identified 422,925 transactions that matches a structuring or layering pattern. Each transaction has Amount_Paid > 8000, which triggers the policy rule: \"Credit Card Large Purchases\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 422925,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "Credit Card Large Purchases",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_016",
+    "alert_headline": "3,565 Transactions Violate Known Laundering Transaction Audit.",
+    "plain_english": "Our automated compliance scan identified 3,565 transactions that exceeds a regulatory reporting threshold. Each transaction has Is_Laundering = 1, which triggers the policy rule: \"Known Laundering Transaction Audit\". This constitutes a HIGH-severity finding requiring analyst review.",
+    "risk_level": "HIGH",
+    "violation_count": 3565,
+    "recommended_action": "Immediately file a Suspicious Activity Report (SAR) and notify compliance officers.",
+    "policy_reference": "Known Laundering Transaction Audit",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_005",
+    "alert_headline": "No violations detected",
+    "plain_english": "Rule RULE_005 found no matching transactions in the dataset. This policy appears to be compliant.",
+    "risk_level": "CLEAR",
+    "violation_count": 0,
+    "recommended_action": "No action required. Continue routine monitoring.",
+    "policy_reference": "Cryptocurrency Exchange Threshold",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_006",
+    "alert_headline": "No violations detected",
+    "plain_english": "Rule RULE_006 found no matching transactions in the dataset. This policy appears to be compliant.",
+    "risk_level": "CLEAR",
+    "violation_count": 0,
+    "recommended_action": "No action required. Continue routine monitoring.",
+    "policy_reference": "Currency Conversion Mismatch Alert",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_011",
+    "alert_headline": "No violations detected",
+    "plain_english": "Rule RULE_011 found no matching transactions in the dataset. This policy appears to be compliant.",
+    "risk_level": "CLEAR",
+    "violation_count": 0,
+    "recommended_action": "No action required. Continue routine monitoring.",
+    "policy_reference": "Velocity Spike Detection",
+    "generated_by": "deterministic"
+  },
+  {
+    "rule_id": "RULE_015",
+    "alert_headline": "No violations detected",
+    "plain_english": "Rule RULE_015 found no matching transactions in the dataset. This policy appears to be compliant.",
+    "risk_level": "CLEAR",
+    "violation_count": 0,
+    "recommended_action": "No action required. Continue routine monitoring.",
+    "policy_reference": "Instant Payment Network Monitoring",
+    "generated_by": "deterministic"
+  }
+]

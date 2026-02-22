@@ -77,6 +77,22 @@ export const uploadPDF = async (file) => {
   return res.json();
 };
 
+// ── Upload CSV ───────────────────────────────────────────────────────────────
+
+export const uploadCSV = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch(`${BASE_URL}/api/upload-csv`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: res.statusText }));
+    throw new Error(err.error || `HTTP ${res.status}`);
+  }
+  return res.json();
+};
+
 // ── Run Pipeline ─────────────────────────────────────────────────────────────
 
 export const runPipeline = (phase, pdfName = null) =>

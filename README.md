@@ -8,22 +8,35 @@ RuleForge reads compliance PDFs (AML directives, FinCEN guidance, Basel III fram
 
 ## 🚀 Quick Start
 
+RuleForge centers around a consolidated **Backend** (Python/DuckDB) and a **React Frontend**.
+
+### Running with Docker (Recommended)
 ```bash
-# 1. Install dependencies
+# Start all services
+docker-compose up --build
+```
+- **Backend API**: http://localhost:5000
+- **Dashboard**: http://localhost:3000
+
+### Standalone Backend Deployment (No Docker)
+If you wish to deploy the backend separately:
+1.  Navigate to `backend/`.
+2.  Run `run_backend.bat` (Windows) or follow the [Manual Setup](#manual-setup) steps below.
+
+### Manual Setup
+```bash
+# 1. Setup Backend
+cd backend
+python -m venv venv
+.\venv\Scripts\activate
 pip install -r requirements.txt
-
-# 2. Set up environment
-cp .env.example .env
-# Add your GROQ_API_KEY to .env
-
-# 3. Load AML dataset
 python data/setup_duckdb.py
+python flask_backend.py
 
-# 4. Run the pipeline
-python main.py --pdf uploads/aml_policy.pdf
-
-# 5. Launch dashboard
-streamlit run app.py
+# 2. Setup Frontend (in separate terminal)
+cd RuleForge-Frontend
+npm install
+npm start
 ```
 
 ## 📋 Features
@@ -106,9 +119,9 @@ streamlit run app.py
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│  Phase 4: HITL Dashboard — Human Governance                 │
+│  Phase 4: RuleForge Dashboard — Human Governance             │
 │  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   │
-│  │ Streamlit UI │ → │ Analyst      │ → │ Audit Log    │   │
+│  │ React UI     │ → │ Analyst      │ → │ Audit Log    │   │
 │  │ (KPIs, Cards)│   │ Decisions    │   │ (SQLite)     │   │
 │  └──────────────┘   └──────────────┘   └──────────────┘   │
 └─────────────────────────────────────────────────────────────┘
@@ -118,36 +131,21 @@ streamlit run app.py
 
 ```
 turgon/
-├── main.py                  # CLI entrypoint (orchestrates phases)
-├── app.py                   # Streamlit dashboard
-├── config.py                # Central configuration
-├── agents.py                # CrewAI agent definitions
-├── tasks.py                 # CrewAI task definitions
-├── tools.py                 # Custom tools (PDF parser, SQL validator, etc.)
-├── phase2_executor.py       # Deterministic SQL generation (no LLM)
-├── phase3_explainer.py      # LLM explanation generator
-├── hitl.py                  # Human-in-the-loop decision storage
-├── audit.py                 # Immutable audit trail (SQLite)
-├── requirements.txt         # Python dependencies
-├── .env                     # Environment variables (GROQ_API_KEY)
+├── backend/                 # Consolidated Python Backend
+│   ├── main.py              # CLI entrypoint
+│   ├── flask_backend.py     # REST API
+│   ├── config.py            # Central configuration
+│   ├── agents.py            # CrewAI agent definitions
+│   ├── rules/               # Rule stores & violations
+│   ├── data/                # DuckDB & dataset setup
+│   ├── uploads/             # PDF storage
+│   └── Dockerfile           # Backend container spec
+├── RuleForge-Frontend/      # React Dashboard
+│   ├── src/                 # UI components & services
+│   └── Dockerfile           # Frontend container spec
 │
-├── data/
-│   ├── setup_duckdb.py      # Load IBM AML dataset into DuckDB
-│   ├── check_schema.py      # Verify database schema
-│   ├── aml.db               # DuckDB database (read-only)
-│   └── HI-Small_Trans.csv   # IBM AML dataset (download from Kaggle)
-│
-├── rules/
-│   ├── policy_rules.json    # Extracted policy rules (current)
-│   ├── violation_report.json # SQL execution results
-│   ├── explanations.json    # Plain-English alerts
-│   ├── policy_versions.json # Version manifest
-│   ├── audit.db             # Audit trail (SQLite)
-│   └── versions/            # Archived rule snapshots
-│       └── policy_rules_v1__20260221T134349Z.json
-│
-└── uploads/
-    └── test_aml_policy.pdf  # Sample regulatory PDF
+├── docker-compose.yml       # Full system orchestration
+└── README.md
 ```
 
 ## 🔧 Configuration
@@ -209,10 +207,11 @@ python main.py --skip-phase1 --phase 23
 python main.py --phase 3 --no-llm
 ```
 
-### Dashboard
+### Dashboard (React)
 
 ```bash
-streamlit run app.py
+cd RuleForge-Frontend
+npm start
 ```
 
 Features:
@@ -300,6 +299,7 @@ Features:
 python data/check_schema.py
 
 # Generate test PDF
+cd backend
 python generate_test_pdf.py
 
 # Run Phase 2 standalone (deterministic)

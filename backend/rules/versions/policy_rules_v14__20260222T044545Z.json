@@ -1,0 +1,12 @@
+[
+  {
+    "id": "RULE_001",
+    "rule_type": "threshold",
+    "description": "Any cash transaction or series of related cash transactions that exceeds USD 10,000 in a single business day MUST be reported to FinCEN within 15 calendar days.",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 10000,
+    "sql_hint": "SELECT * FROM Transactions WHERE Amount_Paid > 10000 AND Payment_Format = 'Cash';",
+    "_fingerprint": "00f0063767a11177"
+  }
+]

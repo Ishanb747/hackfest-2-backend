@@ -33,6 +33,8 @@ VIOLATION_JSON = ROOT / "rules" / "violation_report.json"
 EXPLAIN_JSON   = ROOT / "rules" / "explanations.json"
 UPLOADS_DIR    = ROOT / "uploads"
 UPLOADS_DIR.mkdir(exist_ok=True)
+DATA_DIR       = ROOT / "data"
+DATA_DIR.mkdir(exist_ok=True)
 
 # ── Pipeline job state (in-memory) ────────────────────────────────────────────
 _pipeline_lock   = threading.Lock()
@@ -466,6 +468,38 @@ def upload_file():
         "size":     save_path.stat().st_size,
     })
 
+
+@app.route("/api/upload-csv", methods=["POST"])
+def upload_csv():
+    """Upload a CSV dataset to the data/ directory and run setup_duckdb.py."""
+    if "file" not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    f = request.files["file"]
+    if f.filename == "":
+        return jsonify({"error": "No selected file"}), 400
+    if not f.filename.endswith('.csv'):
+        return jsonify({"error": "Only CSV files are allowed"}), 400
+
+    save_path = DATA_DIR / f.filename
+    f.save(str(save_path))
+    
+    # Run setup_duckdb.py
+    try:
+        venv_python = ROOT / "venv" / "Scripts" / "python.exe"
+        python_exe  = str(venv_python) if venv_python.exists() else sys.executable
+        cmd = [python_exe, str(ROOT / "data" / "setup_duckdb.py")]
+        
+        process = subprocess.run(cmd, capture_output=True, text=True, cwd=str(ROOT))
+        if process.returncode != 0:
+            return jsonify({"error": "Database setup failed", "logs": process.stderr + "\n" + process.stdout}), 500
+            
+        return jsonify({
+            "success":  True,
+            "filename": f.filename,
+            "message": "Dataset uploaded and DuckDB setup completed."
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 def _run_pipeline_thread(cmd: list[str], phase: str):
     """Background thread that runs main.py and captures output."""

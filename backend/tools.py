@@ -181,9 +181,14 @@ class DoclingPDFParserTool(BaseTool):
         # ── Attempt 1: Full pipeline (layout-aware, table detection) ─────────
         try:
             converter = DocumentConverter()
-            result = converter.convert(str(path))
-            markdown_text = result.document.export_to_markdown()
-            pipeline_used = "standard"
+            try:
+                result = converter.convert(str(path))
+                markdown_text = result.document.export_to_markdown()
+                pipeline_used = "standard"
+            finally:
+                del converter
+                import gc
+                gc.collect()
         except Exception as e1:
             # ── Attempt 2: SimplePipeline (no ML layout model required) ──────
             try:
@@ -198,18 +203,31 @@ class DoclingPDFParserTool(BaseTool):
                         InputFormat.PDF: PdfFormatOption(pipeline_cls=SimplePipeline)
                     }
                 )
-                result2 = converter2.convert(str(path))
-                markdown_text = result2.document.export_to_markdown()
-                pipeline_used = f"simple (full pipeline failed: {str(e1)[:120]})"
+                try:
+                    result2 = converter2.convert(str(path))
+                    markdown_text = result2.document.export_to_markdown()
+                    pipeline_used = f"simple (full pipeline failed: {str(e1)[:120]})"
+                finally:
+                    del converter2
+                    import gc
+                    gc.collect()
             except Exception as e2:
                 # ── Attempt 3: Raw pypdfium2 text extraction ──────────────────
                 try:
                     import pypdfium2 as pdfium
+                    import gc
                     pages = []
                     pdf_doc = pdfium.PdfDocument(str(path))
-                    for i, page in enumerate(pdf_doc):
-                        textpage = page.get_textpage()
-                        pages.append(f"## Page {i+1}\n\n{textpage.get_text_range()}")
+                    try:
+                        for i, page in enumerate(pdf_doc):
+                            textpage = page.get_textpage()
+                            pages.append(f"## Page {i+1}\n\n{textpage.get_text_range()}")
+                            textpage.close()
+                            page.close()
+                    finally:
+                        pdf_doc.close()
+                        del pdf_doc
+                        gc.collect() # Force cleanup before pdfium destroys library context
                     markdown_text = "\n\n".join(pages)
                     pipeline_used = f"raw-text (docling failed: {str(e2)[:80]})"
                 except Exception as e3:

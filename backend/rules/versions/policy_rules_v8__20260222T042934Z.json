@@ -1,0 +1,232 @@
+[
+  {
+    "id": "RULE_001",
+    "rule_type": "threshold",
+    "description": "Transactions exceeding $10,000 must be reported to the compliance department within 24 hours",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 10000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 10000",
+    "_fingerprint": "00f0063767a11177"
+  },
+  {
+    "id": "RULE_002",
+    "rule_type": "threshold",
+    "description": "Large Wire Transfer Monitoring - All wire transfers where the Amount_Paid exceeds USD 50,000 in a single transaction must be flagged for enhanced due diligence.",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 50000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 50000 AND Payment_Format = 'Wire'",
+    "_fingerprint": "bbd4b842f80c5413"
+  },
+  {
+    "id": "RULE_003",
+    "rule_type": "threshold",
+    "description": "Wire transfers to or from high-risk jurisdictions exceeding $5,000 must be reported",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 5000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 5000 AND (From_Bank IN (SELECT Jurisdiction FROM high_risk_jurisdictions) OR To_Bank IN (SELECT Jurisdiction FROM high_risk_jurisdictions)) AND Payment_Format = 'Wire Transfer'",
+    "_fingerprint": "9478f8785fa660a5"
+  },
+  {
+    "id": "RULE_004",
+    "rule_type": "threshold",
+    "description": "High-Value Reinvestment Transactions - Any transaction classified as Payment_Format = 'Reinvestment' where the Amount_Paid exceeds USD 25,000 must be escalated to the compliance officer for manual review within 48 hours.",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 25000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 25000 AND Payment_Format = 'Reinvestment'",
+    "_fingerprint": "efc9c8d23d91e1ae"
+  },
+  {
+    "id": "RULE_005",
+    "rule_type": "pattern",
+    "description": "Currency Conversion Mismatch Alert",
+    "condition_field": "Payment_Currency",
+    "operator": "!=",
+    "threshold_value": null,
+    "sql_hint": "SELECT * FROM transactions WHERE Payment_Currency != Receiving_Currency AND Amount_Paid > 5000;",
+    "_fingerprint": "1a6884abd96aa5cd"
+  },
+  {
+    "id": "RULE_006",
+    "rule_type": "threshold",
+    "description": "High-Risk Jurisdiction Transfers - Transfers originating from or destined to banks in high-risk jurisdictions where the amount exceeds USD 1,000 must be automatically flagged pending review.",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 1000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 1000 AND (From_Bank IN (SELECT bank FROM high_risk_jurisdictions) OR To_Bank IN (SELECT bank FROM high_risk_jurisdictions))",
+    "_fingerprint": "7e41b249ffcba12d"
+  },
+  {
+    "id": "RULE_007",
+    "rule_type": "ratio",
+    "description": "Rapid Cross-Currency Round-Trip - Transactions where the Amount_Received deviates by more than 15 percent from Amount_Paid (after FX normalisation) may indicate layering.",
+    "condition_field": "Amount_Received",
+    "operator": "!=",
+    "threshold_value": 0.15,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Received != Amount_Paid * 0.85",
+    "_fingerprint": "00e64058d8d31822"
+  },
+  {
+    "id": "RULE_008",
+    "rule_type": "threshold",
+    "description": "All customer records must be maintained for at least 5 years after the relationship ends",
+    "condition_field": "Record_Retention_Period",
+    "operator": ">=",
+    "threshold_value": 5,
+    "sql_hint": "SELECT * FROM customer_records WHERE Relationship_End_Date IS NOT NULL AND DATEDIFF(CURRENT_DATE, Relationship_End_Date) >= 5*365",
+    "_fingerprint": "c80a31ab2fbbb7f6"
+  },
+  {
+    "id": "RULE_009",
+    "rule_type": "pattern",
+    "description": "Round-Number Transaction Pattern - Transactions where Amount_Paid is an exact multiple of 1000 and Amount_Paid >= 5000 are statistically overrepresented in confirmed laundering cases.",
+    "condition_field": "Amount_Paid",
+    "operator": "%",
+    "threshold_value": 1000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid >= 5000 AND Amount_Paid % 1000 = 0",
+    "_fingerprint": "d496a84dfe522c61"
+  },
+  {
+    "id": "RULE_010",
+    "rule_type": "threshold",
+    "description": "Cheque Transactions Above Threshold - Any cheque-based payment exceeding USD 15,000 must be verified against the account holder identity.",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 15000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 15000 AND Payment_Format = 'Cheque'",
+    "_fingerprint": "1a8e0443b8013de4"
+  },
+  {
+    "id": "RULE_011",
+    "rule_type": "threshold",
+    "description": "Credit Card Large Purchases - Credit card transactions exceeding USD 8,000 in a single transaction must be reviewed for potential card-not-present fraud.",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 8000,
+    "sql_hint": "SELECT * FROM transactions WHERE Amount_Paid > 8000 AND Payment_Format = 'Credit Card'",
+    "_fingerprint": "2e83d930a263aa0d"
+  },
+  {
+    "id": "RULE_012",
+    "rule_type": "threshold",
+    "description": "ACH High-Value Transfers - ACH transfers from a single account totalling more than USD 100,000 within a 7-day period constitute a high-risk aggregation pattern.",
+    "condition_field": "Amount_Paid",
+    "operator": ">",
+    "threshold_value": 100000,
+    "sql_hint": "SELECT * FROM transactions WHERE Payment_Format = 'ACH' AND Amount_Paid > 10000",
+    "_fingerprint": "63aac36d776f6300"
+  },
+  {
+    "id": "RULE_013",
+    "rule_type": "pattern",
+    "description": "Known Laundering Transaction Audit - All confirmed laundering transactions",
+    "condition_field": "Is_Laundering",
+    "operator": "==",
+    "threshold_value": 1,
+    "sql_hint": "SELECT * FROM transactions WHERE Is_Laundering = 1",
+    "_fingerprint": "541985f990ee52c7"
+  },
+  {
+    "id": "RULE_014",
+    "rule_type": "threshold",
+    "description": "Suspicious activities must be reported to the compliance department within 24 hours of detection",
+    "condition_field": "Hours_Since_Detection",
+    "operator": ">",
+    "threshold_value": 24,
+    "sql_hint": "SELECT * FROM suspicious_activities WHERE DATEDIFF(CURRENT_DATE, Detection_Date) * 24 + HOUR(CURRENT_TIME) - HOUR(Detection_Time) > 24 AND Report_Status IS NULL",
+    "_fingerprint": "7247e2c5317c16f1"
+  },
+  {
+    "id": "RULE_015",
+    "rule_type": "threshold",
+    "description": "Compliance breaches must be reported to senior management within 48 hours of detection",
+    "condition_field": "Hours_Since_Detection",
+    "operator": ">",
+    "threshold_value": 48,
+    "sql_hint": "SELECT * FROM compliance_breaches WHERE DATEDIFF(CURRENT_DATE, Detection_Date) * 24 + HOUR(CURRENT_TIME) - HOUR(Detection_Time) > 48 AND Management_Report_Status IS NULL",
+    "_fingerprint": "a0bb6eb1722425e4"
+  },
+  {
+    "id": "RULE_016",
+    "rule_type": "pattern",
+    "description": "Suspicious Activity Reports (SARs) must be filed with FinCEN when required",
+    "condition_field": "SAR_Required",
+    "operator": "==",
+    "threshold_value": "Yes",
+    "sql_hint": "SELECT * FROM suspicious_activities WHERE SAR_Required = 'Yes' AND SAR_Filed_Status IS NULL",
+    "_fingerprint": "88dc7537d23cc745"
+  },
+  {
+    "id": "RULE_018",
+    "rule_type": "jurisdiction",
+    "description": "Enhanced due diligence is required for customers from high-risk jurisdictions",
+    "condition_field": "Customer_Jurisdiction",
+    "operator": "IN",
+    "threshold_value": null,
+    "sql_hint": "SELECT * FROM customer_due_diligence WHERE Customer_Jurisdiction IN (SELECT Jurisdiction FROM high_risk_jurisdictions) AND Due_Diligence_Level != 'Enhanced'",
+    "_fingerprint": "b452b47f786448ff"
+  },
+  {
+    "id": "RULE_019",
+    "rule_type": "jurisdiction",
+    "description": "Transactions involving high-risk jurisdictions are subject to enhanced monitoring",
+    "condition_field": "Transaction_Jurisdiction_Risk",
+    "operator": ">=",
+    "threshold_value": 3,
+    "sql_hint": "SELECT * FROM transactions WHERE (From_Bank IN (SELECT Jurisdiction FROM high_risk_jurisdictions) OR To_Bank IN (SELECT Jurisdiction FROM high_risk_jurisdictions)) AND Monitoring_Level < 'Enhanced'",
+    "_fingerprint": "8e64c807f4b2bd43"
+  },
+  {
+    "id": "RULE_020",
+    "rule_type": "pattern",
+    "description": "Politically Exposed Persons (PEPs) must be identified during the customer onboarding process",
+    "condition_field": "PEP_Status",
+    "operator": "==",
+    "threshold_value": "Identified",
+    "sql_hint": "SELECT * FROM customer_onboarding WHERE PEP_Status IS NULL OR PEP_Status = 'Unknown'",
+    "_fingerprint": "31bf7982049bc211"
+  },
+  {
+    "id": "RULE_022",
+    "rule_type": "pattern",
+    "description": "Senior management approval is required for PEP relationships",
+    "condition_field": "PEP_Approval_Status",
+    "operator": "!=",
+    "threshold_value": "Approved",
+    "sql_hint": "SELECT * FROM pep_relationships WHERE PEP_Approval_Status != 'Approved'",
+    "_fingerprint": "2acd7b6dce636de4"
+  },
+  {
+    "id": "RULE_023",
+    "rule_type": "pattern",
+    "description": "Any transaction that appears to be structured to avoid reporting thresholds must be reported as suspicious",
+    "condition_field": "Transaction_Structuring_Score",
+    "operator": ">",
+    "threshold_value": 0.7,
+    "sql_hint": "SELECT * FROM transactions WHERE Transaction_Structuring_Score > 0.7 AND Is_Suspicious = 'No'",
+    "_fingerprint": "b46841a2e56000e2"
+  },
+  {
+    "id": "RULE_024",
+    "rule_type": "pattern",
+    "description": "Transactions with no apparent economic purpose or business rationale should be reported as suspicious",
+    "condition_field": "Economic_Purpose_Score",
+    "operator": ">",
+    "threshold_value": 0.8,
+    "sql_hint": "SELECT * FROM transactions WHERE Economic_Purpose_Score > 0.8 AND Is_Suspicious = 'No'",
+    "_fingerprint": "8f68aab31babca79"
+  },
+  {
+    "id": "RULE_025",
+    "rule_type": "pattern",
+    "description": "Transactions involving shell companies or entities with opaque ownership structures should be reported as suspicious",
+    "condition_field": "Ownership_Transparency_Score",
+    "operator": ">",
+    "threshold_value": 0.7,
+    "sql_hint": "SELECT * FROM transactions WHERE Ownership_Transparency_Score > 0.7 AND Is_Suspicious = 'No'",
+    "_fingerprint": "1b628b2e5dffe385"
+  }
+]
